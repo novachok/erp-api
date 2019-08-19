@@ -1,0 +1,222 @@
+openapi: 3.0.0
+info:
+  title: ERP API
+  version: "1.0"
+paths:
+  /auth:
+    post:
+      summary: Authentification endpoint
+      tags: 
+      - public
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Ok
+          content:
+            headers:
+              schema:
+                type: object
+                properties:
+                  X-User-Token:
+                    type: string
+        401:
+          description: Unauthorized
+  /reset:
+    post:
+      tags: 
+      - public
+      summary: Reset password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+      responses:
+        200:
+          description: Ok
+  /identity:
+    get:
+      tags: 
+      - private
+      summary: Get User's identity data
+      parameters: 
+      - $ref: "#/components/parameters/UserToken"
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Identity"
+        401:
+          description: Unauthorized
+    put:
+      tags:
+      - private
+      summary: Update User's identity data
+      parameters: 
+      - $ref: "#/components/parameters/UserToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdentityPost'
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Identity'
+  /identity/account:
+    post:
+      tags:
+      - private
+      summary: Create and account
+      parameters: 
+      - $ref: '#/components/parameters/UserToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountPost'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        401:
+          description: Unauthorized
+  /identity/account/{id}:
+    get:
+      tags: 
+      - private
+      summary: Get account data
+      parameters: 
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/UserToken'
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+    put:
+      tags: 
+      - private
+      summary: Update an account
+      parameters: 
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/UserToken'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountPost'
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        401:
+          description: Unauthorized
+    delete:
+      tags: 
+      - private
+      summary: Delete an account
+      parameters: 
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/UserToken'
+      responses:
+        204:
+          description: No Content
+        401:
+          description: Unauthorized
+
+components:
+  parameters:
+    UserToken:
+      in: header
+      name: X-User-Token
+      schema:
+        type: string
+    Id:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+  schemas:
+    AccountPost:
+      type: object
+      properties:
+        title:
+          type: string
+        account:
+          type: string
+        mfo:
+          type: string
+        isDefault:
+          type: boolean
+        currency:
+          type: string
+    Account:
+      allOf:
+        - type: object
+          properties:
+            id: 
+              type: string
+        - $ref: '#/components/schemas/AccountPost'
+
+    IdentityPost:
+      type: object
+      required: 
+      - email
+      properties:
+        email:
+          type: string
+          format: email
+        firstname:
+          type: string
+        lastName:
+          type: string
+        title:
+          type: string
+        inn:
+          type: integer
+        phone: 
+          type: string
+        address: 
+          type: string
+    Identity:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+            accounts:
+              type: array
+              items: 
+                $ref: "#/components/schemas/Account"
+        - $ref: "#/components/schemas/IdentityPost"
