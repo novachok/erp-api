@@ -153,6 +153,190 @@ paths:
           description: No Content
         401:
           description: Unauthorized
+  /customers:
+    get:
+      tags:
+      - private
+      summary: Get list of customers
+      parameters:
+      - $ref: '#/components/parameters/UserToken'
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      tags: 
+      - private
+      summary: Create an customer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerPost'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        401:
+          description: Unauthorized
+  /customer/{id}:
+    get:
+      tags:
+      - private
+      summary: Get Customer
+      parameters: 
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/UserToken'
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        401:
+          description: Unauthorized
+    put:
+      tags:
+      - private
+      summary: Update Customer
+      parameters: 
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/UserToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerPost'
+      responses:
+        200:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        401:
+          description: Unauthorized
+    delete:
+      tags:
+      - private
+      summary: Delete Customer
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/UserToken'
+      responses:
+        204:
+          description: No Content
+        401:
+          description: Unauthorized
+  /hostings:
+    get:
+      tags:
+      - private
+      summary: Get Hosting accounts
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/UserToken'
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hosting'
+    post:
+      tags: 
+      - private
+      summary: Create a hosting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HostingPost'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hosting'
+        401:
+          description: Unauthorized
+  /hosting/{id}:
+    get:
+      tags:
+      - private
+      summary: Get Hosting
+      parameters: 
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/UserToken'
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hosting'
+        401:
+          description: Unauthorized
+    put:
+      tags:
+      - private
+      summary: Update Hosting
+      parameters: 
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/UserToken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HostingPost'
+      responses:
+        200:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hosting'
+        401:
+          description: Unauthorized
+    delete:
+      tags:
+      - private
+      summary: Disable Hosting
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/UserToken'
+      responses:
+        204:
+          description: No Content
+        401:
+          description: Unauthorized
+  /docs:
+    get:
+      tags:
+      - private
+      summary: Get list of invoices and acts
+      parameters:
+      - $ref: '#/components/parameters/UserToken'
+      responses:
+        200:
+          description: Ok
+        401:
+          description: Unauthorized
+      
 
 components:
   parameters:
@@ -220,3 +404,73 @@ components:
               items: 
                 $ref: "#/components/schemas/Account"
         - $ref: "#/components/schemas/IdentityPost"
+    CustomerPost:
+      type: object
+      required: 
+      - title
+      properties:
+        title:
+          type: string
+        contact:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        notes:
+          type: string
+        createdAt: 
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Customer:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+      - $ref: '#/components/schemas/CustomerPost'
+    HostingPost:
+      type: object
+      required:
+      - domain
+      properties:
+        validTo:
+          type: string
+          format: date-time
+        domain:
+          type: string
+        account:
+          type: string
+        onlyHosting:
+          type: boolean
+        onlyDomain:
+          type: boolean
+        space:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Hosting:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+      - $ref: '#/components/schemas/HostingPost'
+    DocPost:
+      type: object
+    Doc:
+      allOf:
+      - type: object
+        properties:
+          id: 
+            type: string
+      - $ref: '#/components/schemas/DocPost'
