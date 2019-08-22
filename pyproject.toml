@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "erp"
+version = "0.1.0"
+description = ""
+authors = ["Oleksandr Novachok <novachok@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.1"
+pytest-cov = "^2.7"
+flake8 = "^3.7"
+flake8-docstrings = "^1.3"
+darglint = "^0.6.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

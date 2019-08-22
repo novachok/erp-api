@@ -334,9 +334,54 @@ paths:
       responses:
         200:
           description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doc'
         401:
           description: Unauthorized
-      
+    post:
+      tags:
+      - private
+      summary: Create a doc
+      parameters:
+      - $ref: '#/components/parameters/UserToken'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocPost'
+      responses:
+        201:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doc'
+        401:
+          description: Unauthorized
+  /doc/{id}:
+    put:
+      tags:
+      - private
+      summary: Update a document
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      - $ref: '#/components/parameters/UserToken'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocPost'
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Doc'
+        401:
+          description: Unauthorized
 
 components:
   parameters:
@@ -465,12 +510,64 @@ components:
           id:
             type: string
       - $ref: '#/components/schemas/HostingPost'
+    DocItemPost:
+      type: object
+      required:
+      - job
+      - units
+      - price
+      properties:
+        job: 
+          type: string
+        units:
+          type: integer
+        price:
+          type: number
+          format: decimal
+    DocItem:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+      - $ref: '#/components/schemas/DocItemPost'
     DocPost:
       type: object
+      required:
+      - num
+      properties:
+        dateOf:
+          type: string
+          format: date-time
+        actOf:
+          type: string
+          format: date-time
+        isInvoiced:
+          type: boolean
+        isActed:
+          type: boolean
+        num:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
     Doc:
       allOf:
       - type: object
         properties:
           id: 
             type: string
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/DocItem'
+          customer:
+            $ref: '#/components/schemas/Customer'
+          hosting:
+            $ref: '#/components/schemas/Hosting'
+          account:
+            $ref: '#/components/schemas/Account'
       - $ref: '#/components/schemas/DocPost'
