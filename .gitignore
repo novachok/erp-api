@@ -1,3 +1,4 @@
 .gcloudignore
 .python-version
+.idea
 __pycache__/*
