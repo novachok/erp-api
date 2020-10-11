@@ -1,5 +1,13 @@
+import uuid
+
+
 def search():
-    return {"key": "identity"}
+    uuid_ = str(uuid.uuid4())
+
+    response = {}
+
+    return response
+
 
 def put():
     pass
