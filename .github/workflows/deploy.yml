@@ -42,7 +42,7 @@ jobs:
         working-directory: ./infra
         id: validate
         run: terraform validate -no-color
-`
+
       - name: Terraform Apply
         working-directory: ./infra
         run: terraform apply -auto-approve
