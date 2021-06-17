@@ -4,5 +4,5 @@
 .env
 .terraform*
 build/*zip
-infra/key.json
+.key
 __pycache__/*
