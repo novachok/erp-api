@@ -2,4 +2,6 @@
 .python-version
 .idea
 .env
+build/*zip
+infra/key.json
 __pycache__/*

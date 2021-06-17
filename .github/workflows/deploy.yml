@@ -1,0 +1,32 @@
+name: Artinet ERP
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy Artinet ERP application
+    runs-on: ubuntu-latest
+    environment: prod
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure GC credentials
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Build Function artifacts
+        run: bash ./build/build_function.sh
+
+      - name: Upload Function artifacts
+        run: gsutil cp function.zip gs://${{secrets.ARTIFACTS_BUCKET}}/erp/
+
