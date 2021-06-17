@@ -34,15 +34,15 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Init
-        working-directory: ./infra
+        working-directory: infra
         id: init
         run: terraform init
 
       - name: Terraform Validate
-        working-directory: ./infra
+        working-directory: infra
         id: validate
         run: terraform validate -no-color
 
       - name: Terraform Apply
-        working-directory: ./infra
+        working-directory: infra
         run: terraform apply -auto-approve
