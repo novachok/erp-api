@@ -2,6 +2,7 @@
 .python-version
 .idea
 .env
+.terraform*
 build/*zip
 infra/key.json
 __pycache__/*
