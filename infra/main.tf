@@ -12,7 +12,6 @@ terraform {
 }
 
 provider "google" {
-  credentials = file("key.json")
   project     = "artinet-webserver"
   region      = "europe-central2"
 }
