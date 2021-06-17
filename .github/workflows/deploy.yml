@@ -28,5 +28,5 @@ jobs:
         run: bash ./build/build_function.sh
 
       - name: Upload Function artifacts
-        run: gsutil cp function.zip gs://${{secrets.ARTIFACTS_BUCKET}}/erp/
+        run: gsutil cp ./build/function.zip gs://${{secrets.ARTIFACTS_BUCKET}}/erp/
 
