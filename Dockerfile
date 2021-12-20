@@ -5,7 +5,7 @@ COPY pyproject.toml poetry.lock /src/
 
 RUN python -m pip install poetry && \
     poetry config virtualenvs.create false && \
-    python -m pip install uvicorn
+    python -m pip install uvicorn && \
     poetry install --no-dev
 
 COPY src/app /src

@@ -5,4 +5,4 @@
 .terraform*
 build/*zip
 .key
-__pycache__/*
+**/__pycache__
