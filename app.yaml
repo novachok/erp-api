@@ -1,9 +1,0 @@
-service: default
-runtime: python39
-handlers:
-   - url: /(.*\.(gif|png|jpg|css))$
-     static_files: static/\1
-     upload: static/.*\.(gif|png|jpg|css)$
-
-   - url: /.*
-     script: auto

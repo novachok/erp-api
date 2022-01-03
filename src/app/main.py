@@ -1,19 +1,17 @@
 from fastapi import FastAPI
-from google.cloud import firestore
+from accounts import app as accounts
+from customers import app as customers
+from orders import app as orders
 
 
 app = FastAPI()
-db = firestore.Client()
 
 
-@app.get("/")
-def index():
-    customers_ref = db.collection(u'customers')
-    docs = customers_ref.stream()
-
-    return [doc.to_dict() for doc in docs]
+app.mount("/accounts", accounts)
+app.mount("/customers", customers)
+app.mount("/orders", orders)
 
 
 @app.get("/status")
-def get_status():
+async def get_status():
     return {"status": "Ok"}
